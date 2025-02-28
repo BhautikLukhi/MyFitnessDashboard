@@ -4,7 +4,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import numpy as np
-import io
 
 
 df = pd.read_excel("FoodTracker.xlsx")
@@ -21,26 +20,17 @@ df['StepsWalked'] = pd.to_numeric(df['StepsWalked'], errors='coerce')
 df['waterIntake'] = pd.to_numeric(df['waterIntake'], errors='coerce')
 
 
-
-#Title of the app
 st.title("Macros, Movement & More")
 
 #df to CSV
-#csv = df.to_csv(index=False)
-
-#dd to excel
-output = io.BytesIO()
-with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-    df.to_excel(writer, index=False, sheet_name="Tracking Data")
-    writer.close()
-xlsx_data = output.getvalue()
+csv = df.to_csv(index=False)
 
 #download button
 st.download_button(
     label="Download detailed data as Excel file",
-    data=xlsx_data,
+    data=xlsx,
     file_name="FoodTracker.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    mime="text/csv",
     key="download_button",
     help="Click to download Bhautik's full tracking data"
 )
