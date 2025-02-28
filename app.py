@@ -27,12 +27,12 @@ csv = df.to_csv(index=False)
 
 #download button
 st.download_button(
-    label="Download detailed data as Excel file",
+    label="Download detailed data as CSV",
     data=csv,
     file_name="FoodTracker.xlsx",
     mime="text/csv",
     key="download_button",
-    help="Click to download Bhautik's full tracking data"
+    help="Click to download Bhautik's full tracking data as CSV file"
 )
 
 
