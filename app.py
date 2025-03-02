@@ -35,34 +35,25 @@ st.download_button(
     help="Click to download Bhautik's full tracking data as CSV file"
 )
 
-
-# #Stacked Bar Chart for Macronutrient Intake Over Time
-# fig_macros = go.Figure()
-# fig_macros.add_trace(go.Bar(x=df['Date'], y=df['carbsTotal'], name='Carbs', marker_color='blue'))
-# fig_macros.add_trace(go.Bar(x=df['Date'], y=df['protienTotal'], name='Protein', marker_color='green'))
-# fig_macros.add_trace(go.Bar(x=df['Date'], y=df['fatTotal'], name='Fats', marker_color='red'))
-# fig_macros.update_layout(title="Macronutrient Intake Over Time", xaxis_title="Date", yaxis_title="Grams", barmode="stack", xaxis=dict(tickangle=-45), template="plotly_dark")
-# st.plotly_chart(fig_macros)
-
-# Convert 'Date' to datetime format if it's not already
+#'Date' to datetime format
 df['Date'] = pd.to_datetime(df['Date'])
 
-# Extract only the day of the month for better readability
+#taking out only the day of the month
 df['Day'] = df['Date'].dt.day
 
-# Stacked Bar Chart with Improved X-axis Labels
+#stacked Bar Chart for macros
 fig_macros = go.Figure()
 fig_macros.add_trace(go.Bar(x=df['Day'], y=df['carbsTotal'], name='Carbs', marker_color='blue'))
 fig_macros.add_trace(go.Bar(x=df['Day'], y=df['protienTotal'], name='Protein', marker_color='green'))
 fig_macros.add_trace(go.Bar(x=df['Day'], y=df['fatTotal'], name='Fats', marker_color='red'))
 
 fig_macros.update_layout(
-    title="Macronutrient Intake Over Time",
+    title="Macronutrient Intake Over The Whole Month",
     xaxis_title="Days of February",
     yaxis_title="Grams",
     barmode="stack",
     template="plotly_dark",
-    xaxis=dict(tickmode="linear", tick0=1, dtick=1)  # Ensure every day is labeled
+    xaxis=dict(tickmode="linear", tick0=1, dtick=1)  
 )
 
 st.plotly_chart(fig_macros)
@@ -71,12 +62,12 @@ st.plotly_chart(fig_macros)
 fig_calories = px.histogram(df, x="caloriesIntake", nbins=20, title="Distribution of Daily Calorie Intake", labels={"caloriesIntake": "Calories"}, template="plotly_dark")
 st.plotly_chart(fig_calories)
 
-#Pie Chart for Average Macronutrient Ratios
+#pie Chart for Average Macronutrient Ratios
 avg_macros = df[['carbsTotal', 'protienTotal', 'fatTotal']].mean()
-fig_avg_macros = px.pie(values=avg_macros, names=avg_macros.index, title="Average Macronutrient Distribution Over The Whole Month", template="plotly_dark")
+fig_avg_macros = px.pie(values=avg_macros, names=avg_macros.index, title="Average Macronutrient Distribution", template="plotly_dark")
 st.plotly_chart(fig_avg_macros)
 
-#Correlation Heatmap with Mobile-Friendly Adjustments
+#Correlation Heatmap
 corr_matrix = df[['carbsTotal', 'protienTotal', 'fatTotal', 'caloriesIntake', 'caloriesBurned', 'NetcalorieIntake', 'StepsWalked', 'waterIntake']].corr()
 fig_corr = ff.create_annotated_heatmap(
     z=np.round(corr_matrix.values, 2),
@@ -88,19 +79,14 @@ fig_corr = ff.create_annotated_heatmap(
 fig_corr.update_layout(
     title_text="Correlation of Dietary and Movement Metrics",
     template="plotly_dark",
-    margin=dict(l=80, r=80, t=100, b=100),  # Adjust margins for better layout
-    xaxis=dict(tickangle=-25, tickfont=dict(size=10)),  # Rotate x-axis labels and reduce font size
-    yaxis=dict(tickfont=dict(size=10))  # Reduce y-axis font size
+    margin=dict(l=80, r=80, t=100, b=100), 
+    xaxis=dict(tickangle=-25, tickfont=dict(size=10)),  
+    yaxis=dict(tickfont=dict(size=10))  
 )
 
 st.plotly_chart(fig_corr, use_container_width=True)
 
-
-# #Boxplot of Water Intake
-# fig_water = px.box(df, y="waterIntake", title="Distribution of Daily Water Intake", labels={"waterIntake": "Water Intake (Liters)"}, template="plotly_dark")
-# st.plotly_chart(fig_water)
-
-#Boxplot of Water Intake
+#linechart for Water Intake
 avg_water = df["waterIntake"].mean()
 fig_water_line = px.line(
     df, x="Date", y="waterIntake",
@@ -109,22 +95,24 @@ fig_water_line = px.line(
     template="plotly_dark",
     markers=True
 )
-fig_water_line.add_trace(go.Scatter(x=df["Date"], y=[avg_water] * len(df["Date"]), mode='lines', name="Average Water", line=dict(color='red', dash='dash')))
+fig_water_line.add_trace(go.Scatter(x=df["Date"], y=[avg_water] * len(df["Date"]), mode='lines', name="Average", line=dict(color='red', dash='dash')))
 st.plotly_chart(fig_water_line)
 
 
-#Line Chart for Calories Intake vs. Calories Burned
-fig_cals = px.line(df, x="Date", y=["caloriesIntake", "caloriesBurned"], title="Calories Intake vs. Calories Burned Over Time", labels={"value": "Calories", "variable": "Legend"}, template="plotly_dark")
+#line Chart for Calories Intake vs. Calories Burned
+fig_cals = px.line(df, x="Date", y=["caloriesIntake", "caloriesBurned"], title="Calories Intake vs. Calories Burned Over The Whole Month", labels={"value": "Calories", "variable": ""}, template="plotly_dark")
 st.plotly_chart(fig_cals)
 
 
-#Steps Walked Over Time with Average Line
+#line chart for steps Walked
 avg_steps = df["StepsWalked"].mean()
 fig_steps_line = go.Figure()
 fig_steps_line.add_trace(go.Scatter(x=df["Date"], y=df["StepsWalked"], mode='lines+markers', name="Steps", line=dict(color='blue')))
-fig_steps_line.add_trace(go.Scatter(x=df["Date"], y=[avg_steps] * len(df["Date"]), mode='lines', name="Average Steps", line=dict(color='red', dash='dash')))
-fig_steps_line.update_layout(title="Steps Walked Over Time with Average", xaxis_title="Date", yaxis_title="Steps Walked", template="plotly_dark")
+fig_steps_line.add_trace(go.Scatter(x=df["Date"], y=[avg_steps] * len(df["Date"]), mode='lines', name="Average", line=dict(color='red', dash='dash')))
+fig_steps_line.update_layout(title="Steps Walked Over The Whole Month", xaxis_title="Date", yaxis_title="Steps Walked", template="plotly_dark")
 st.plotly_chart(fig_steps_line)
+
+
 
 
 
