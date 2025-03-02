@@ -48,7 +48,7 @@ fig_macros.add_trace(go.Bar(x=df['Day'], y=df['protienTotal'], name='Protein', m
 fig_macros.add_trace(go.Bar(x=df['Day'], y=df['fatTotal'], name='Fats', marker_color='red'))
 
 fig_macros.update_layout(
-    title="Macronutrient Intake Over The Whole Month",
+    title="Macronutrients Intake Over The Whole Month",
     xaxis_title="Days of February",
     yaxis_title="Grams",
     barmode="stack",
@@ -79,7 +79,7 @@ fig_corr = ff.create_annotated_heatmap(
 fig_corr.update_layout(
     title_text="Correlation of Dietary and Movement Metrics",
     template="plotly_dark",
-    margin=dict(l=80, r=80, t=100, b=100), 
+    margin=dict(l=80, r=80, t=110, b=100), 
     xaxis=dict(tickangle=-25, tickfont=dict(size=10)),  
     yaxis=dict(tickfont=dict(size=10))  
 )
@@ -90,8 +90,8 @@ st.plotly_chart(fig_corr, use_container_width=True)
 avg_water = df["waterIntake"].mean()
 fig_water_line = px.line(
     df, x="Date", y="waterIntake",
-    title="Daily Water Intake Over Time",
-    labels={"waterIntake": "Water Intake", "Date": "Date"},
+    title="Daily Water Intake Over The Whole Month",
+    labels={"waterIntake": "Water Intake(liters)", "Date": "Date"},
     template="plotly_dark",
     markers=True
 )
