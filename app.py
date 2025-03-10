@@ -20,20 +20,33 @@ df['StepsWalked'] = pd.to_numeric(df['StepsWalked'], errors='coerce')
 df['waterIntake'] = pd.to_numeric(df['waterIntake'], errors='coerce')
 
 
-st.title("Macros, Movement & More")
-
 #df to CSV
 csv = df.to_csv(index=False)
 
-#download button
-st.download_button(
-    label="Download detailed data as CSV",
-    data=csv,
-    file_name="FoodTracker.xlsx",
-    mime="text/csv",
-    key="download_button",
-    help="Click to download Bhautik's full tracking data as CSV file"
-)
+#title and description
+st.title("Macros, Movement & More!")
+
+#two columns: one for Text & one for Button
+col1, col2 = st.columns([4, 1])  
+
+with col1:
+    st.markdown("""
+    For the entire month of **February**, I meticulously tracked everything I ate—each snack, every calorie, and all my activities.  
+
+    Below is a visual breakdown of my **daily intake, macronutrient distribution, movement patterns, and overall trends** in an interactive format.
+    """)
+
+
+with col2:
+    st.download_button(
+        label="Download data ",
+        data=csv,
+        file_name="FoodTracker.csv",
+        mime="text/csv",
+        key="download_csv",
+        help="Click to download Bhautik's full tracking data as CSV file"
+    )
+
 
 #'Date' to datetime format
 df['Date'] = pd.to_datetime(df['Date'])
