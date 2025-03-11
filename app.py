@@ -18,7 +18,7 @@ df['Date'] = pd.to_datetime(df['Date'])
 df['Day'] = df['Date'].dt.day  # Extracting day of the month
 
 # Create Tabs for Navigation
-tab1, tab2 = st.tabs(["📊 Overview & Visualizations", "🍽️ Food Tracker - Meal Photos"])
+tab1, tab2 = st.tabs(["Overview & Visualizations", "🍽️ Meal Photos"])
 
 # ------------- 📊 Tab 1: Overview & Visualizations -------------
 with tab1:
