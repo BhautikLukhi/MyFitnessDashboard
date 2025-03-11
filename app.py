@@ -150,4 +150,5 @@ with tab2:
     cols = st.columns(3)  # Creating three columns for grid layout
     for idx, (filename, caption) in enumerate(meal_images.items()):
         with cols[idx % 3]:  # Distribute images across columns
-            st.image(f"food/{filename}", caption=caption, use_column_width=True)
+            st.image(f"Food/{filename}", caption=caption, use_container_width=True)
+
