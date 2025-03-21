@@ -110,8 +110,8 @@ with tab1:
 
 # ------------- 🍽️ Tab 2: Food Tracker - Meal Photos -------------
 with tab2:
-    st.title("Meal Images - February")
-    st.write("Here are the images of the meals I ate throughout February, along with their corresponding names.")
+    st.title("Meal Images")
+    st.write("Here are the images of the meals I ate throughout February and till 3rd week of March.")
 
     # **Mapping Image Filenames to Meal Names**
     meal_images = {
@@ -123,6 +123,19 @@ with tab2:
         "07D.png": "Moong beans sabji with Protein tortillas, yogurt, peanuts",
         "07L.png": "Red Thai curry with Tofu and Rice",
         "09S2.png": "Veggie Delight 15cm",
+        "M1.png": "Samosa (Indian snack - deep-fried pastry with savory filling)",
+        "M2.png": "Paneer butter masala with Naan and Rice - Swaad Indian Restaurant, Düsseldorf",
+        "M3.png": "Croissant with Hot Chocolate",
+        "M4.png": "Soya Rice outside X-Building",
+        "M5.png": "Pizza with Veggies and Dip",
+        "M6.png": "Soya Rice with Quark and Peanuts",
+        "M7.png": "Kassebrotchen",
+        "M8.png": "Mixed Vegetable Curry with Quark and Protein Tortillas",
+        #"M9.png": "Pappermint Tea X-cafeteria",
+        "M10.png": "Mixed Beans and Nuts Bowl",
+        "M11.png": "Slice of Cheesecake",
+        "M12.png": "Hasan's Cappuccino",
+        "M13.png": "Soya Rice",
         "10L.png": "Cheese Spaetzle with Mix vegetables and Protein bowl",
         "11L.png": "Cheese potato pockets, Boiled potatoes with Protein bowl",
         "12L.png": "Gnocchi with Rice and Protein bowl",
@@ -143,12 +156,13 @@ with tab2:
         "25D.png": "Cooked Black gram Dal with Protein tortillas, yogurt, peanuts",
         "25L.png": "Spinach Puff Pastry, Boiled pasta and Protein bowl",
         "27L.png": "Chinese 'Hong-Kong' crispy slice with Boiled potatoes and Protein Bowl",
-        "28L.png": "Cauliflower cheese Medallion with Rice and Protein bowl"
+        #"28L.png": "Cauliflower cheese Medallion with Rice and Protein bowl"
     }
 
-    # Display images from the "food" folder
+        # Display images from the "food" folder
     cols = st.columns(3)  # Creating three columns for grid layout
     for idx, (filename, caption) in enumerate(meal_images.items()):
         with cols[idx % 3]:  # Distribute images across columns
-            st.image(f"Food/{filename}", caption=caption, use_container_width=True)
+            st.image(f"Food/{filename}", caption=caption)
+
 
