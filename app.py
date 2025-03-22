@@ -5,19 +5,18 @@ import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import numpy as np
 
-# Load the data
+#The data :-)
 df = pd.read_excel("FoodTracker.xlsx")
 
-# Convert necessary columns to numeric
 numeric_cols = ['carbsTotal', 'protienTotal', 'fatTotal', 'caloriesIntake', 
                 'caloriesBurned', 'NetcalorieIntake', 'StepsWalked', 'waterIntake']
 df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
 
-# Convert 'Date' to datetime format
+#'Date' to datetime format
 df['Date'] = pd.to_datetime(df['Date'])
-df['Day'] = df['Date'].dt.day  # Extracting day of the month
+df['Day'] = df['Date'].dt.day  #day of the month
 
-# Create Tabs for Navigation
+#Tabs for Navigation
 tab1, tab2 = st.tabs(["Overview & Visualizations", "🍽️ Meal Photos"])
 
 # ------------- 📊 Tab 1: Overview & Visualizations -------------
@@ -29,7 +28,7 @@ with tab1:
     Below is a visual breakdown of my **daily intake, macronutrient distribution, movement patterns, and overall trends** in an interactive format.
     """)
 
-    # Download button
+    #Download button
     csv = df.to_csv(index=False)
     st.download_button(
         label="Download data",
@@ -61,7 +60,7 @@ with tab1:
     fig_calories = px.histogram(df, x="caloriesIntake", nbins=20, title="Distribution of Daily Calorie Intake", labels={"caloriesIntake": "Calories"}, template="plotly_dark")
     st.plotly_chart(fig_calories)
 
-    #pie Chart for Average Macronutrient Ratios
+    #Pie Chart for Average Macronutrient Ratios
     avg_macros = df[['carbsTotal', 'protienTotal', 'fatTotal']].mean()
     fig_avg_macros = px.pie(values=avg_macros, names=avg_macros.index, title="Average Macronutrient Distribution", template="plotly_dark")
     st.plotly_chart(fig_avg_macros)
@@ -85,7 +84,7 @@ with tab1:
 
     st.plotly_chart(fig_corr, use_container_width=True)
 
-    #linechart for Water Intake
+    #Linechart for Water Intake
     avg_water = df["waterIntake"].mean()
     fig_water_line = px.line(
         df, x="Date", y="waterIntake",
@@ -97,7 +96,7 @@ with tab1:
     fig_water_line.add_trace(go.Scatter(x=df["Date"], y=[avg_water] * len(df["Date"]), mode='lines', name="Average", line=dict(color='red', dash='dash')))
     st.plotly_chart(fig_water_line)
 
-    #line Chart for Calories Intake vs. Calories Burned
+    #Line Chart for Calories Intake vs. Calories Burned
     fig_cals = px.line(df, x="Date", y=["caloriesIntake", "caloriesBurned"], title="Calories Intake vs. Calories Burned Over The Whole Month", labels={"value": "Calories", "variable": ""}, template="plotly_dark")
     st.plotly_chart(fig_cals)
 
@@ -159,10 +158,10 @@ with tab2:
         #"28L.png": "Cauliflower cheese Medallion with Rice and Protein bowl"
     }
 
-        # Display images from the "food" folder
-    cols = st.columns(3)  # Creating three columns for grid layout
+        #Iterate through images 
+    cols = st.columns(3)  # three columns for grid layout
     for idx, (filename, caption) in enumerate(meal_images.items()):
-        with cols[idx % 3]:  # Distribute images across columns
+        with cols[idx % 3]:  
             st.image(f"Food/{filename}", caption=caption)
 
 
