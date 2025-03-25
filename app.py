@@ -4,6 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import numpy as np
+# from core.management.data.post import DataManage
 
 #The data :-)
 df = pd.read_excel("FoodTracker.xlsx")
@@ -18,6 +19,41 @@ df['Day'] = df['Date'].dt.day  #day of the month
 
 #Tabs for Navigation
 tab1, tab2 = st.tabs(["Overview & Visualizations", "🍽️ Meal Photos"])
+
+
+# import streamlit as st
+# from core.management.data.post import DataManage  # ✅ Correct import
+
+# # Tabs for Navigation
+# tab1, tab2, tab3 = st.tabs(["Overview & Visualizations", "🍽️ Meal Photos", "📸 Instagram"])
+
+# # ------------ 📸 Tab 3: Instagram Posts ------------
+# with tab3:
+#     st.title("Latest Instagram Posts")
+
+#     post_url = st.text_input("Enter Instagram Post URL", "https://www.instagram.com/p/CODE_HERE/")
+
+#     if st.button("Fetch Post"):
+#         try:
+#             # Initialize Instagram scraper with the post URL
+#             data = DataManage(post_url=post_url)  
+
+#             # Get post info
+#             post_info = data.get_all_post_info()
+            
+#             if not post_info:
+#                 st.write("No Instagram posts found.")
+#             else:
+#                 st.subheader(f"Post from @{post_info.get('account_username', 'unknown')}")
+
+#                 # Display post images
+#                 for idx, url in post_info.get('images_url', {}).items():
+#                     st.image(url, caption=post_info.get('description', f"Post {idx}"))
+            
+#         except Exception as e:
+#             st.error(f"Error fetching Instagram posts: {e}")
+
+        
 
 # ------------- 📊 Tab 1: Overview & Visualizations -------------
 with tab1:
