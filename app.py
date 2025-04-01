@@ -8,60 +8,38 @@ import numpy as np
 
 #The data :-)
 df = pd.read_excel("FoodTracker.xlsx")
+march_df = pd.read_excel("FoodTrackerM.xlsx")
 
 numeric_cols = ['carbsTotal', 'protienTotal', 'fatTotal', 'caloriesIntake', 
                 'caloriesBurned', 'NetcalorieIntake', 'StepsWalked', 'waterIntake']
-df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
+# df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
 
-#'Date' to datetime format
-df['Date'] = pd.to_datetime(df['Date'])
-df['Day'] = df['Date'].dt.day  #day of the month
+# Convert columns to numeric
+for data in [df, march_df]:
+    data[numeric_cols] = data[numeric_cols].apply(pd.to_numeric, errors='coerce')
+    data['Date'] = pd.to_datetime(data['Date'])
+    data['Day'] = data['Date'].dt.day
+
+
+# #'Date' to datetime format
+# df['Date'] = pd.to_datetime(df['Date'])
+# df['Day'] = df['Date'].dt.day  #day of the month
 
 #Tabs for Navigation
-tab1, tab2 = st.tabs(["Overview & Visualizations", "🍽️ Meal Photos"])
+# tab1, tab2 = st.tabs(["Overview & Visualizations", "🍽️ Meal Photos"])
+
+# Tabs for Navigation
+tab1, tab2, tab3 = st.tabs(["📅 February", "📅 March",  "🍽️ Meal Photos"])
 
 
-# import streamlit as st
-# from core.management.data.post import DataManage  # ✅ Correct import
+# ------------ Tab 1: February Overview ------------
 
-# # Tabs for Navigation
-# tab1, tab2, tab3 = st.tabs(["Overview & Visualizations", "🍽️ Meal Photos", "📸 Instagram"])
-
-# # ------------ 📸 Tab 3: Instagram Posts ------------
-# with tab3:
-#     st.title("Latest Instagram Posts")
-
-#     post_url = st.text_input("Enter Instagram Post URL", "https://www.instagram.com/p/CODE_HERE/")
-
-#     if st.button("Fetch Post"):
-#         try:
-#             # Initialize Instagram scraper with the post URL
-#             data = DataManage(post_url=post_url)  
-
-#             # Get post info
-#             post_info = data.get_all_post_info()
-            
-#             if not post_info:
-#                 st.write("No Instagram posts found.")
-#             else:
-#                 st.subheader(f"Post from @{post_info.get('account_username', 'unknown')}")
-
-#                 # Display post images
-#                 for idx, url in post_info.get('images_url', {}).items():
-#                     st.image(url, caption=post_info.get('description', f"Post {idx}"))
-            
-#         except Exception as e:
-#             st.error(f"Error fetching Instagram posts: {e}")
-
-        
-
-# ------------- 📊 Tab 1: Overview & Visualizations -------------
 with tab1:
-    st.title("Macros, Movement & More!")
+    st.title("Macros, Movement & More! - February")
 
     st.markdown("""
-    For the entire month of **February**, I meticulously tracked everything I ate—each snack, every calorie, and all my activities.  
-    Below is a visual breakdown of my **daily intake, macronutrient distribution, movement patterns, and overall trends** in an interactive format.
+    From **February**, I have been meticulously tracking everything I am eating—each snack, every calorie, and my physical activities.  
+    Below is a visual breakdown of my **daily intake, macronutrient distribution, movement patterns, and overall trends**.
     """)
 
     #Download button
@@ -71,7 +49,7 @@ with tab1:
         data=csv,
         file_name="FoodTracker.csv",
         mime="text/csv",
-        key="download_csv",
+        key="download_csvF",
         help="Click to download Bhautik's full tracking data as CSV file"
     )
 
@@ -143,8 +121,91 @@ with tab1:
     fig_steps_line.update_layout(title="Steps Walked Over The Whole Month", xaxis_title="Date", yaxis_title="Steps Walked", template="plotly_dark")
     st.plotly_chart(fig_steps_line)
 
-# ------------- 🍽️ Tab 2: Food Tracker - Meal Photos -------------
 with tab2:
+    st.title("March")
+    st.write("Analysis of macronutrients, calories, and movement patterns for March.")
+
+    #Download button
+    csv = march_df.to_csv(index=False)
+    st.download_button(
+        label="Download data",
+        data=csv,
+        file_name="FoodTrackerM.csv",
+        mime="text/csv",
+        key="download_csvM",
+        help="Click to download Bhautik's full tracking data as CSV file"
+    )
+
+    #stacked Bar Chart for macros
+    fig_macros = go.Figure()
+    fig_macros.add_trace(go.Bar(x=march_df['Day'], y=march_df['carbsTotal'], name='Carbs', marker_color='blue'))
+    fig_macros.add_trace(go.Bar(x=march_df['Day'], y=march_df['protienTotal'], name='Protein', marker_color='green'))
+    fig_macros.add_trace(go.Bar(x=march_df['Day'], y=march_df['fatTotal'], name='Fats', marker_color='red'))
+
+    fig_macros.update_layout(
+        title="Macronutrients Intake Over The Whole Month",
+        xaxis_title="Days of March",
+        yaxis_title="Grams",
+        barmode="stack",
+        template="plotly_dark",
+        xaxis=dict(tickmode="linear", tick0=1, dtick=1)  
+    )
+
+    st.plotly_chart(fig_macros)
+
+    #Histogram of Calorie Intake
+    fig_calories = px.histogram(march_df, x="caloriesIntake", nbins=20, title="Distribution of Daily Calorie Intake", labels={"caloriesIntake": "Calories"}, template="plotly_dark")
+    st.plotly_chart(fig_calories)
+
+    #Pie Chart for Average Macronutrient Ratios
+    avg_macros = march_df[['carbsTotal', 'protienTotal', 'fatTotal']].mean()
+    fig_avg_macros = px.pie(values=avg_macros, names=avg_macros.index, title="Average Macronutrient Distribution", template="plotly_dark")
+    st.plotly_chart(fig_avg_macros)
+
+    #Correlation Heatmap
+    corr_matrix = march_df[['carbsTotal', 'protienTotal', 'fatTotal', 'caloriesIntake', 'caloriesBurned', 'NetcalorieIntake', 'StepsWalked', 'waterIntake']].corr()
+    fig_corr = ff.create_annotated_heatmap(
+        z=np.round(corr_matrix.values, 2),
+        x=list(corr_matrix.columns),
+        y=list(corr_matrix.index),
+        colorscale='Blues',
+        showscale=True
+    )
+    fig_corr.update_layout(
+        title_text="Correlation of Dietary and Movement Metrics",
+        template="plotly_dark",
+        margin=dict(l=80, r=80, t=110, b=100), 
+        xaxis=dict(tickangle=-25, tickfont=dict(size=10)),  
+        yaxis=dict(tickfont=dict(size=10))  
+    )
+
+    st.plotly_chart(fig_corr, use_container_width=True)
+
+    #Linechart for Water Intake
+    avg_water = march_df["waterIntake"].mean()
+    fig_water_line = px.line(
+        march_df, x="Date", y="waterIntake",
+        title="Daily Water Intake Over The Whole Month",
+        labels={"waterIntake": "Water Intake(liters)", "Date": "Date"},
+        template="plotly_dark",
+        markers=True
+    )
+    fig_water_line.add_trace(go.Scatter(x=march_df["Date"], y=[avg_water] * len(march_df["Date"]), mode='lines', name="Average", line=dict(color='red', dash='dash')))
+    st.plotly_chart(fig_water_line)
+
+    #Line Chart for Calories Intake vs. Calories Burned
+    fig_cals = px.line(march_df, x="Date", y=["caloriesIntake", "caloriesBurned"], title="Calories Intake vs. Calories Burned Over The Whole Month", labels={"value": "Calories", "variable": ""}, template="plotly_dark")
+    st.plotly_chart(fig_cals)
+
+    avg_steps = march_df["StepsWalked"].mean()
+    fig_steps_line = go.Figure()
+    fig_steps_line.add_trace(go.Scatter(x=march_df["Date"], y=march_df["StepsWalked"], mode='lines+markers', name="Steps", line=dict(color='blue')))
+    fig_steps_line.add_trace(go.Scatter(x=march_df["Date"], y=[avg_steps] * len(march_df["Date"]), mode='lines', name="Average", line=dict(color='red', dash='dash')))
+    fig_steps_line.update_layout(title="Steps Walked Over The Whole Month", xaxis_title="Date", yaxis_title="Steps Walked", template="plotly_dark")
+    st.plotly_chart(fig_steps_line)
+
+# ------------- 🍽️ Tab 3: Food Tracker - Meal Photos -------------
+with tab3:
     st.title("Meal Images")
     st.write("Here are the images of the meals I ate throughout February and till 3rd week of March.")
 
@@ -153,6 +214,10 @@ with tab2:
         "03L.png": "Fried croquettes, potatoes and Protein bowl",
         "03S1.png": "Hasan's Caramel Latte",
         "04B.png": "Protein Shake",
+        "Back.png": "Back gains after 3 months of Weight Training",
+        "M28.png": "DM-Protien Cookie",
+        "M29S.png": "Hot indian Snack",
+        "M30.png": "Solo starbucks date after 3 hours of Gym session",
         "04S1.png": "Small Fruit Bowl at WestEnd",
         "05L.png": "Pasta with sauce, potatoes and Protein bowl",
         "07D.png": "Moong beans sabji with Protein tortillas, yogurt, peanuts",
