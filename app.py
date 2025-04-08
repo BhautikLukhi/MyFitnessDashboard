@@ -206,8 +206,8 @@ with tab2:
 
 # ------------- 🍽️ Tab 3: Food Tracker - Meal Photos -------------
 with tab3:
-    st.title("Meal Images")
-    st.write("Here are the images of the meals I ate throughout February and till 3rd week of March.")
+    st.title("Image Gallery")
+    st.write("Here are some images of what I ate throughout February and March.")
 
     # **Mapping Image Filenames to Meal Names**
     meal_images = {
