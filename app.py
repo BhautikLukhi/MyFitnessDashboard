@@ -29,7 +29,7 @@ for data in [df, march_df]:
 # tab1, tab2 = st.tabs(["Overview & Visualizations", "🍽️ Meal Photos"])
 
 # Tabs for Navigation
-tab1, tab2, tab3 = st.tabs(["📅 February", "📅 March",  "🍽️ Meal Photos"])
+tab1, tab2, tab3 = st.tabs(["📅 February", "📅 March",  "📷Image Gallery"])
 
 
 # ------------ Tab 1: February Overview ------------
@@ -206,8 +206,8 @@ with tab2:
 
 # ------------- 🍽️ Tab 3: Food Tracker - Meal Photos -------------
 with tab3:
-    st.title("Image Gallery")
-    st.write("Here are some images of what I ate throughout February and March.")
+    st.title("Little fact: Switching to this diet cost me €150 more than my usual grocery/food expenses.")
+    #st.write("Here are some images of what I ate throughout February and March.")
 
     # **Mapping Image Filenames to Meal Names**
     meal_images = {
