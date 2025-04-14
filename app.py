@@ -208,6 +208,19 @@ with tab2:
 with tab3:
     st.title("Little fact: Switching to this diet cost me €150 more than my usual grocery/food expenses.")
     #st.write("Here are some images of what I ate throughout February and March.")
+    # Instagram link with icon
+    st.markdown(
+    """
+    <div style="text-align:center; margin-bottom: 20px;">
+        <a href="https://instagram.com/bhautik.py" target="_blank" style="text-decoration: none;">
+            <img src="https://img.icons8.com/ios-glyphs/30/ffffff/instagram-new.png" style="vertical-align: middle; margin-right: 8px;"/>
+            <span style="font-size: 18px; color: #1E90FF;">Wanna see more of my fitness grind? Catch me on Instagram!</span>
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 
     # **Mapping Image Filenames to Meal Names**
     meal_images = {
