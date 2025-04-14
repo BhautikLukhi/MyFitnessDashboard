@@ -213,8 +213,8 @@ with tab3:
     """
     <div style="text-align:center; margin-bottom: 20px;">
         <a href="https://instagram.com/bhautik.py" target="_blank" style="text-decoration: none;">
-            <img src="https://img.icons8.com/ios-glyphs/30/ffffff/instagram-new.png" style="vertical-align: middle; margin-right: 8px;"/>
-            <span style="font-size: 18px; color: #1E90FF;">Wanna see more of my fitness grind? Catch me on Instagram!</span>
+            <img src="https://img.icons8.com/?size=100&id=ZRiAFreol5mE&format=png&color=000000" style="vertical-align: middle; margin-right: 8px; width="40" ; height="40""/>
+            <span style="font-size: 20px; color: #1E90FF;">Wanna see more of my fitness grind? Catch me on Instagram!</span>
         </a>
     </div>
     """,
