@@ -9,13 +9,14 @@ import numpy as np
 #The data :-)
 df = pd.read_excel("FoodTracker.xlsx")
 march_df = pd.read_excel("FoodTrackerM.xlsx")
+april_df = pd.read_excel("FoodTrackerA.xlsx")
 
 numeric_cols = ['carbsTotal', 'protienTotal', 'fatTotal', 'caloriesIntake', 
                 'caloriesBurned', 'NetcalorieIntake', 'StepsWalked', 'waterIntake']
 # df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
 
 # Convert columns to numeric
-for data in [df, march_df]:
+for data in [df, march_df, april_df]:
     data[numeric_cols] = data[numeric_cols].apply(pd.to_numeric, errors='coerce')
     data['Date'] = pd.to_datetime(data['Date'])
     data['Day'] = data['Date'].dt.day
@@ -29,7 +30,8 @@ for data in [df, march_df]:
 # tab1, tab2 = st.tabs(["Overview & Visualizations", "🍽️ Meal Photos"])
 
 # Tabs for Navigation
-tab1, tab2, tab3 = st.tabs(["📅 February", "📅 March",  "📷Image Gallery"])
+tab1, tab2, tab3, tab4 = st.tabs(["📅 February", "📅 March", "📅 April", "📷Image Gallery"])
+
 
 
 # ------------ Tab 1: February Overview ------------
@@ -204,8 +206,90 @@ with tab2:
     fig_steps_line.update_layout(title="Steps Walked Over The Whole Month", xaxis_title="Date", yaxis_title="Steps Walked", template="plotly_dark")
     st.plotly_chart(fig_steps_line)
 
-# ------------- 🍽️ Tab 3: Food Tracker - Meal Photos -------------
+
+# ------------ Tab 3: April Overview ------------
 with tab3:
+    st.title("April")
+    st.write("Analysis of macronutrients, calories, and movement patterns for April.")
+
+    #Download button
+    csv = april_df.to_csv(index=False)
+    st.download_button(
+        label="Download data",
+        data=csv,
+        file_name="FoodTrackerA.csv",
+        mime="text/csv",
+        key="download_csvA",
+        help="Click to download April tracking data"
+    )
+
+    # Stacked bar chart for macros
+    fig_macros = go.Figure()
+    fig_macros.add_trace(go.Bar(x=april_df['Day'], y=april_df['carbsTotal'], name='Carbs', marker_color='blue'))
+    fig_macros.add_trace(go.Bar(x=april_df['Day'], y=april_df['protienTotal'], name='Protein', marker_color='green'))
+    fig_macros.add_trace(go.Bar(x=april_df['Day'], y=april_df['fatTotal'], name='Fats', marker_color='red'))
+
+    fig_macros.update_layout(
+        title="Macronutrients Intake Over April",
+        xaxis_title="Days of April",
+        yaxis_title="Grams",
+        barmode="stack",
+        template="plotly_dark",
+        xaxis=dict(tickmode="linear", tick0=1, dtick=1)
+    )
+    st.plotly_chart(fig_macros)
+
+
+    # Pie chart for Average Macronutrients
+    avg_macros = april_df[['carbsTotal', 'protienTotal', 'fatTotal']].mean()
+    fig_avg_macros = px.pie(values=avg_macros, names=avg_macros.index, title="Average Macronutrient Distribution", template="plotly_dark")
+    st.plotly_chart(fig_avg_macros)
+
+    # Correlation heatmap
+    corr_matrix = april_df[numeric_cols].corr()
+    fig_corr = ff.create_annotated_heatmap(
+        z=np.round(corr_matrix.values, 2),
+        x=list(corr_matrix.columns),
+        y=list(corr_matrix.index),
+        colorscale='Blues',
+        showscale=True
+    )
+    fig_corr.update_layout(
+        title_text="Correlation of Dietary and Movement Metrics",
+        template="plotly_dark",
+        margin=dict(l=80, r=80, t=110, b=100),
+        xaxis=dict(tickangle=-25, tickfont=dict(size=10)),
+        yaxis=dict(tickfont=dict(size=10))
+    )
+    st.plotly_chart(fig_corr, use_container_width=True)
+
+    # Linechart for Water Intake
+    avg_water = april_df["waterIntake"].mean()
+    fig_water_line = px.line(
+        april_df, x="Date", y="waterIntake",
+        title="Daily Water Intake Over April",
+        labels={"waterIntake": "Water Intake (liters)", "Date": "Date"},
+        template="plotly_dark",
+        markers=True
+    )
+    fig_water_line.add_trace(go.Scatter(x=april_df["Date"], y=[avg_water]*len(april_df), mode='lines', name="Average", line=dict(color='red', dash='dash')))
+    st.plotly_chart(fig_water_line)
+
+    # Line chart: Calories Intake vs Burned
+    fig_cals = px.line(april_df, x="Date", y=["caloriesIntake", "caloriesBurned"], title="Calories Intake vs. Calories Burned in April", labels={"value": "Calories", "variable": ""}, template="plotly_dark")
+    st.plotly_chart(fig_cals)
+
+    # Steps chart
+    avg_steps = april_df["StepsWalked"].mean()
+    fig_steps_line = go.Figure()
+    fig_steps_line.add_trace(go.Scatter(x=april_df["Date"], y=april_df["StepsWalked"], mode='lines+markers', name="Steps", line=dict(color='blue')))
+    fig_steps_line.add_trace(go.Scatter(x=april_df["Date"], y=[avg_steps] * len(april_df), mode='lines', name="Average", line=dict(color='red', dash='dash')))
+    fig_steps_line.update_layout(title="Steps Walked in April", xaxis_title="Date", yaxis_title="Steps Walked", template="plotly_dark")
+    st.plotly_chart(fig_steps_line)
+
+
+# ------------- 🍽️ Tab 3: Food Tracker - Meal Photos -------------
+with tab4:
     st.title("Little fact: Switching to this diet cost me €150 more than my usual grocery/food expenses.")
     #st.write("Here are some images of what I ate throughout February and March.")
     # Instagram link with icon
