@@ -223,7 +223,7 @@ with tab3:
         help="Click to download April tracking data"
     )
 
-    # Stacked bar chart for macros
+    #Stacked bar chart for macros
     fig_macros = go.Figure()
     fig_macros.add_trace(go.Bar(x=april_df['Day'], y=april_df['carbsTotal'], name='Carbs', marker_color='blue'))
     fig_macros.add_trace(go.Bar(x=april_df['Day'], y=april_df['protienTotal'], name='Protein', marker_color='green'))
@@ -240,12 +240,12 @@ with tab3:
     st.plotly_chart(fig_macros)
 
 
-    # Pie chart for Average Macronutrients
+    #Pie chart for Average Macronutrients
     avg_macros = april_df[['carbsTotal', 'protienTotal', 'fatTotal']].mean()
     fig_avg_macros = px.pie(values=avg_macros, names=avg_macros.index, title="Average Macronutrient Distribution", template="plotly_dark")
     st.plotly_chart(fig_avg_macros)
 
-    # Correlation heatmap
+    #Correlation heatmap
     corr_matrix = april_df[numeric_cols].corr()
     fig_corr = ff.create_annotated_heatmap(
         z=np.round(corr_matrix.values, 2),
@@ -263,7 +263,7 @@ with tab3:
     )
     st.plotly_chart(fig_corr, use_container_width=True)
 
-    # Linechart for Water Intake
+    #Linechart for Water Intake
     avg_water = april_df["waterIntake"].mean()
     fig_water_line = px.line(
         april_df, x="Date", y="waterIntake",
@@ -275,11 +275,11 @@ with tab3:
     fig_water_line.add_trace(go.Scatter(x=april_df["Date"], y=[avg_water]*len(april_df), mode='lines', name="Average", line=dict(color='red', dash='dash')))
     st.plotly_chart(fig_water_line)
 
-    # Line chart: Calories Intake vs Burned
+    #Line chart: Calories Intake vs Burned
     fig_cals = px.line(april_df, x="Date", y=["caloriesIntake", "caloriesBurned"], title="Calories Intake vs. Calories Burned in April", labels={"value": "Calories", "variable": ""}, template="plotly_dark")
     st.plotly_chart(fig_cals)
 
-    # Steps chart
+    #Steps chart
     avg_steps = april_df["StepsWalked"].mean()
     fig_steps_line = go.Figure()
     fig_steps_line.add_trace(go.Scatter(x=april_df["Date"], y=april_df["StepsWalked"], mode='lines+markers', name="Steps", line=dict(color='blue')))
@@ -290,7 +290,7 @@ with tab3:
 
 # ------------- 🍽️ Tab 3: Food Tracker - Meal Photos -------------
 with tab4:
-    st.title("Little fact: Switching to this diet cost me €150 more than my usual grocery/food expenses.")
+    st.title(".... I am not tracking anymore from May; as the app I was using to get macros got expensive :(")
     #st.write("Here are some images of what I ate throughout February and March.")
     # Instagram link with icon
     st.markdown(
