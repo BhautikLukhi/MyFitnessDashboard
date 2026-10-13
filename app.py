@@ -290,20 +290,20 @@ with tab3:
 
 # ------------- 🍽️ Tab 3: Food Tracker - Meal Photos -------------
 with tab4:
-    st.title(".... I am not tracking anymore from May; as the app I was using to get macros got expensive :(")
-    #st.write("Here are some images of what I ate throughout February and March.")
-    # Instagram link with icon
-    st.markdown(
-    """
-    <div style="text-align:center; margin-bottom: 20px;">
-        <a href="https://instagram.com/bhautik.py" target="_blank" style="text-decoration: none;">
-            <img src="https://img.icons8.com/?size=100&id=ZRiAFreol5mE&format=png&color=000000" style="vertical-align: middle; margin-right: 8px; width="40" ; height="40""/>
-            <span style="font-size: 20px; color: #1E90FF;">Wanna see more of my fitness grind? Catch me on Instagram!</span>
-        </a>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+#     st.title(".... I am not tracking anymore from May; as the app I was using to get macros got expensive :(")
+#     #st.write("Here are some images of what I ate throughout February and March.")
+#     # Instagram link with icon
+#     st.markdown(
+#     """
+#     <div style="text-align:center; margin-bottom: 20px;">
+#         <a href="https://instagram.com/bhautik.py" target="_blank" style="text-decoration: none;">
+#             <img src="https://img.icons8.com/?size=100&id=ZRiAFreol5mE&format=png&color=000000" style="vertical-align: middle; margin-right: 8px; width="40" ; height="40""/>
+#             <span style="font-size: 20px; color: #1E90FF;">Wanna see more of my fitness grind? Catch me on Instagram!</span>
+#         </a>
+#     </div>
+#     """,
+#     unsafe_allow_html=True
+# )
 
 
     # **Mapping Image Filenames to Meal Names**
@@ -338,7 +338,7 @@ with tab4:
         "12L.png": "Gnocchi with Rice and Protein bowl",
         "13L.png": "Pumpkin-potato curry with Rice and Protein bowl",
         "13S1.png": "Apple and Coffee",
-        "14D.png": "Pigeon peas Dal with Protein tortillas, yogurt, peanuts",
+        #"14D.png": "Pigeon peas Dal with Protein tortillas, yogurt, peanuts",
         "14L.png": "Spinach Puff Pastry, Boiled potatoes and Protein bowl",
         "16D.png": "Vangibhath + Deep fried onion pakora and Milk Tea",
         "16S2.png": "Spicy Chickpeas from Regel",
